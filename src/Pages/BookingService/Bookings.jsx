@@ -1,21 +1,37 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import BookingsRow from "./BookingsRow";
+import { useNavigate } from "react-router-dom";
 
 const Bookings = () => {
    const [bookings, setBookings] = useState([]);
    const { user } = useContext(AuthContext);
-   const url = `http://localhost:5000/bookings?email=${user?.email}`;
+   const navigate = useNavigate();
+   const url = `https://car-doctor-server-beryl-alpha.vercel.app/bookings?email=${user?.email}`;
    useEffect(() => {
-      fetch(url)
+      fetch(url, {
+         method: 'GET',
+         headers: {
+            authorization: `bearer ${localStorage.getItem('car-doctor-access-token')}`
+         }
+      })
          .then(res => res.json())
-         .then(data => setBookings(data));
-   }, [url]);
+         .then(data => {
+            if (!data.error) {
+               setBookings(data);
+            }
+            else {
+
+               // you can then logout and navigate
+               navigate('/');
+            }
+         });
+   }, [url, navigate]);
 
    const handleDelete = (id) => {
       const isProceed = confirm(`Are you sure you want to delete`);
       if (isProceed) {
-         fetch(`http://localhost:5000/bookings/${id}`, {
+         fetch(`https://car-doctor-server-beryl-alpha.vercel.app/bookings/${id}`, {
             method: 'DELETE'
          })
             .then(res => res.json())
@@ -33,7 +49,7 @@ const Bookings = () => {
    const handleBookingConfirm = (id) => {
       const isProceed = confirm(`Are you sure you want to confirm ?`);
       if (isProceed) {
-         fetch(`http://localhost:5000/bookings/${id}`, {
+         fetch(`https://car-doctor-server-beryl-alpha.vercel.app/bookings/${id}`, {
             method: 'PATCH',
             headers: {
                'content-type': 'application/json',

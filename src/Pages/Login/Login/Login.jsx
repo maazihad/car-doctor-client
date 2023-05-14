@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import login from "../../../assets/images/login/login.svg";
 import { useContext } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import Swal from "sweetalert2";
+import SocialLogin from "../../Shared/SocialLogin/SocialLogin";
 
 
 
@@ -10,10 +11,12 @@ const Login = () => {
 
 
    const { signIn } = useContext(AuthContext);
+   const location = useLocation();
+   const from = location.state?.from?.pathname || '/';
+   const navigate = useNavigate();
 
    const handleLogin = event => {
       event.preventDefault();
-
       const form = event.target;
       const email = form.email.value;
       const password = form.password.value;
@@ -24,6 +27,14 @@ const Login = () => {
       signIn(email, password)
          .then(result => {
             const user = result.user;
+
+            console.log(user);
+
+            navigate(from, { replace: true });
+
+
+
+            // sweet alert 
             if (user) {
                Swal.fire({
                   position: 'center',
@@ -33,6 +44,8 @@ const Login = () => {
                   timer: 1000
                });
             }
+
+
          })
          .catch(error => console.error(error));
 
@@ -75,6 +88,7 @@ const Login = () => {
                      <div>
                         <p className="text-amber-400">New to Car Doctor&apos;s, <Link className="text-amber-700" to="/signUp">Sign Up!</Link> </p>
                      </div>
+                     <SocialLogin></SocialLogin>
                   </div>
                </div>
             </div>

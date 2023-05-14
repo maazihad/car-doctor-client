@@ -7,7 +7,9 @@ const Header = () => {
    const { user, logOut } = useContext(AuthContext);
    const handleLogout = () => {
       logOut()
-         .then(() => { })
+         .then(() => {
+
+         })
          .then(error => console.log(error));
    };
    const navItems = <>

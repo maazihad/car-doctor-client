@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../providers/AuthProvider';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
+import SocialLogin from '../../Shared/SocialLogin/SocialLogin';
 
 const SignUp = () => {
    // const [error, setError] = useState('');
@@ -86,6 +87,7 @@ const SignUp = () => {
                   <div>
                      <p className="text-amber-400">Have an account ? please <Link className="text-amber-700" to="/login">Login</Link> </p>
                   </div>
+                  <SocialLogin></SocialLogin>
                </div>
             </div>
          </div>
