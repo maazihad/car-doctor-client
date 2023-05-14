@@ -3,6 +3,7 @@ import login from "../../../assets/images/login/login.svg";
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../../providers/AuthProvider';
 import toast from 'react-hot-toast';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
    // const [error, setError] = useState('');
@@ -26,7 +27,15 @@ const SignUp = () => {
          .then(result => {
             const user = result.user;
             console.log(user);
-
+            if (user) {
+               Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'User create successfully.',
+                  showConfirmButton: false,
+                  timer: 1000
+               });
+            }
          })
          .catch(error => console.error(error));
    };

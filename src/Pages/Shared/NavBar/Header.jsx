@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../../assets/logo.svg";
+import { AuthContext } from '../../../providers/AuthProvider';
 
 const Header = () => {
+   const { user, logOut } = useContext(AuthContext);
+   const handleLogout = () => {
+      logOut()
+         .then(() => { })
+         .then(error => console.log(error));
+   };
    const navItems = <>
       <li>
          <Link to="/">Home</Link>
@@ -10,9 +17,22 @@ const Header = () => {
       <li>
          <Link to="/about">About</Link>
       </li>
-      <li>
-         <Link to="/login">Login</Link>
-      </li>
+      {
+         user?.email
+            ?
+            <>
+               <li>
+                  <Link to="/bookings"><button>My bookings</button></Link>
+               </li>
+               <li>
+                  <button onClick={handleLogout}>Logout</button>
+               </li>
+            </>
+            :
+            <li>
+               <Link to="/login">Login</Link>
+            </li>
+      }
    </>;
    return (
       <div className="navbar bg-base-100 py-3">
